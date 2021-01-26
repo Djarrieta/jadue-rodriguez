@@ -1,14 +1,21 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Calendario from '../views/Calendario.vue'
 
 Vue.use(VueRouter)
+
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/calendario',
+    name: 'Calendario',
+    component: Calendario
   },
   {
     path: '/about',

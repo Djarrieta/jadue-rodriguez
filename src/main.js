@@ -6,6 +6,8 @@ import router from '@/router'
 import store from '@/store'
 import vuetify from './plugins/vuetify';
 
+Vue.use(require('vue-moment'));
+
 import VueTextAreaAutosize from 'vue-textarea-autosize'
 Vue.use(VueTextAreaAutosize)
 

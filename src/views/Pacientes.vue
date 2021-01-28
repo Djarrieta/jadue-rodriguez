@@ -24,7 +24,7 @@
                             <v-toolbar flat>
                                 <v-dialog
                                     v-model="dialog"
-                                    max-width="500px"
+                                    max-width="650px"
                                 >
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-btn
@@ -118,21 +118,22 @@
                                 </v-dialog>
                                 <v-dialog v-model="dialogDelete" max-width="500px">
                                     <v-card>
-                                        <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
+                                        <v-card-title class="headline">¿Estás seguro que quieres eliminarlo?</v-card-title>
                                         <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                                        <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+                                        <v-btn color="blue darken-1" text @click="closeDelete">Cancelar</v-btn>
+                                        <v-btn color="red darken-2" text @click="deleteItemConfirm">Borrar</v-btn>
                                         <v-spacer></v-spacer>
                                         </v-card-actions>
                                     </v-card>
-                                    </v-dialog>
+                                </v-dialog>
                             </v-toolbar>
                         </template>
 
                         <template v-slot:item.actions="{ item }">
                             <v-icon
                                 small
+                                color="green"
                                 class="mr-2"
                                 @click="editItem(item)"
                             >
@@ -140,6 +141,7 @@
                             </v-icon>
                             <v-icon
                                 small
+                                color="red"
                                 @click="deleteItem(item)"
                             >
                                 mdi-delete
@@ -149,81 +151,7 @@
                 </v-card>
             </v-col>
         </v-row>
-        
-        
-        <!-- Modal  -->
-        <!-- <v-dialog v-model="dialog" max-width="600px" >
-            <v-card class="pa-4">
-                <v-form @submit.prevent="addClient">
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12" >
-                                <h2 class="text-uppercase">Nuevo paciente</h2>
-                            </v-col>
-
-                            <v-col cols="12" md="6">
-                                <v-text-field 
-                                    type="text" label="Nombre" v-model="name">
-                                </v-text-field>
-                            </v-col>
-                            <v-col cols="12" md="6">
-                                <v-text-field 
-                                    type="text" label="Apellido" v-model="lastName">
-                                </v-text-field>
-                            </v-col>
-
-                            <v-col cols="12" md="6">
-                                <v-text-field 
-                                    type="text" label="RUN" v-model="run">
-                                </v-text-field>
-                            </v-col>
-                            <v-col cols="12" md="6">
-                                <v-text-field 
-                                    type="date" label="Fecha de nacimiento" v-model="birthdate">
-                                </v-text-field>
-                            </v-col>
-
-                            <v-col cols="12">
-                                <v-text-field 
-                                    type="text" label="Dirección" v-model="address">
-                                </v-text-field>
-                            </v-col>
-
-                            <v-col cols="12" md="6">
-                                <v-text-field 
-                                    type="text" label="Ciudad" v-model="city">
-                                </v-text-field>
-                            </v-col>
-                            <v-col cols="12" md="6">
-                                <v-text-field 
-                                    type="text" label="Ocupación" v-model="profession">
-                                </v-text-field>
-                            </v-col>
-
-                            <v-col cols="12" md="6">
-                                <v-text-field 
-                                    type="text" label="Teléfono" v-model="phone">
-                                </v-text-field>
-                            </v-col>
-                            <v-col cols="12" md="6">
-                                <v-text-field 
-                                    type="text" label="E-mail" v-model="email">
-                                </v-text-field>
-                            </v-col>
-
-                            <v-col cols="12" md="6">
-                                <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog=false">Agregar</v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-form>
-            </v-card>
-        </v-dialog> -->
-        
     </v-container>
-
-
-
 </template>
 
 <script>
@@ -253,6 +181,8 @@ export default {
           { text: 'RUN', value: 'run' },
           { text: 'Teléfono', value: 'phone' },
           { text: 'E-mail', value: 'email' },
+          { text: 'Dirección', value: 'address' },
+          { text: 'Ciudad', value: 'city' },
           { text: 'Actions', value: 'actions', sortable: false },
         ],
         editedItem: {
@@ -262,7 +192,7 @@ export default {
             phone: '',
             email: '',
             address: '',
-            birthdate: '',
+            birthdate: new Date(),
             city: '',
             profession: '',
 
@@ -274,7 +204,7 @@ export default {
             phone: '',
             email: '',
             address: '',
-            birthdate: '',
+            birthdate: new Date(),
             city: '',
             profession: '',
         },
@@ -282,9 +212,10 @@ export default {
 
     computed:{
         submitableBirdthdayDateTime () {
-            const date = new Date(moment(this.birthdate).format('MM-DD-YYYY'))
+            const date = new Date(moment(this.editedItem.birthdate).format('MM-DD-YYYY'))
             return date
         },
+
         formTitle () {
             return this.editedIndex === -1 ? 'Nuevo Paciente' : 'Editar paciente'
         },
@@ -307,8 +238,11 @@ export default {
         save () {
             if (this.editedIndex > -1) {
                 Object.assign(this.clients[this.editedIndex], this.editedItem)
+                // console.log(this.clients[this.editedIndex]) // este edita
+                this.editClient(this.clients[this.editedIndex])
             } else {
-                this.clients.push(this.editedItem)
+                //this.clients.push(this.editedItem)
+                this.addClient(this.editedItem)
             }
             this.close()
         },
@@ -327,15 +261,42 @@ export default {
             this.dialog = true
         },
 
+        async editClient (data) {
+            try {
+                await db.collection('clients').doc(data.id).update({
+                    name: data.name,
+                    lastName: data.lastName,
+                    run: data.run,
+                    address: data.address,
+                    city: data.city,
+                    profession: data.profession,
+                    phone: data.phone,
+                    email: data.email,
+                    birthdate: this.submitableBirdthdayDateTime,
+                })
+                this.getClients()
+            } catch (error) {
+                console.error(error)
+            }
+        },
+
         deleteItem (item) {
             this.editedIndex = this.clients.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialogDelete = true
         },
 
-        deleteItemConfirm () {
-            this.clients.splice(this.editedIndex, 1)
-            this.closeDelete()
+        async deleteItemConfirm () {
+            // this.clients.splice(this.editedIndex, 1)
+            // console.log(this.editedItem.id)
+            try {
+                await db.collection('clients').doc(this.editedItem.id).delete()
+                this.getClients()
+                this.closeDelete()
+            } catch (error) {
+                console.error(error)
+            }
+            
         },
 
         closeDelete () {
@@ -346,19 +307,20 @@ export default {
             })
         },
 
-        async addClient() {
+        async addClient(item) {
+            console.log(item)
             try {
-                if(this.name && this.lastName && this.run) {
+                if(item.name && item.lastName && item.run) {
                     await db.collection('clients').add({
-                        name: this.name,
-                        lastName: this.lastName,
-                        run: this.run,
+                        name: item.name,
+                        lastName: item.lastName,
+                        run: item.run,
                         birthdate: this.submitableBirdthdayDateTime,
-                        address: this.address,
-                        city: this.city,
-                        profession: this.profession,
-                        phone: this.phone,
-                        email: this.email,
+                        address: item.address,
+                        city: item.city,
+                        profession: item.profession,
+                        phone: item.phone,
+                        email: item.email,
                     })
 
                     this.getClients()
@@ -390,6 +352,7 @@ export default {
                     clientData.id = doc.id
                     const birthdate = new Date(clientData.birthdate.seconds * 1000)
                     clients.push({
+                        id: clientData.id,
                         name: clientData.name,
                         lastName: clientData.lastName,
                         run: clientData.run,
@@ -412,7 +375,3 @@ export default {
 
 }
 </script>
-
-<style>
-
-</style>

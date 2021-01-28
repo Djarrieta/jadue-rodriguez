@@ -7,21 +7,21 @@ import Vuetify from 'vuetify/lib/framework';
  */
 
  // Translation provided by Vuetify (javascript)
-import zhHans from 'vuetify/es5/locale/zh-Hans'
+import es from 'vuetify/es5/locale/es'
 
 Vue.use(Vuetify);
 
 Vue.component('my-component', {
   methods: {
     changeLocale () {
-      this.$vuetify.lang.current = 'sv'
+      this.$vuetify.lang.current = 'es'
     },
   },
 })
 
 export default new Vuetify({
     lang: {
-        locales: { zhHans },
-            current: 'zhHans',
+        locales: { es },
+            current: 'es',
         },
 });

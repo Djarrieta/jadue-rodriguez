@@ -110,7 +110,7 @@
                                     type="text" label="Agregar detalle" v-model="details">
                                 </v-text-field>
                                 <v-text-field 
-                                    type="datetime" label="Fecha inicio" v-model="start">
+                                    type="date" label="Fecha inicio" v-model="start">
                                 </v-text-field>
                                 <v-text-field 
                                     type="date" label="Fecha término" v-model="end">

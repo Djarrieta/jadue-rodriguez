@@ -195,6 +195,7 @@
 <script>
     import {db} from "../main"
     export default {
+        name:"Agenda",
         data: () => ({
             focus: '',
             type: 'month',
@@ -344,8 +345,3 @@
         },
     }
 </script>
-
-
-<style>
-
-</style>

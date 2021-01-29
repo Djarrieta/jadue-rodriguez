@@ -65,7 +65,7 @@ router.beforeEach((to, from, next) => {
   user=!user
 
   if(ingreso && user){
-    next("/perfil")
+    next("/agenda")
   }else if (auth && !user) {
     next("/")
   }else {

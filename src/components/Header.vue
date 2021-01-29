@@ -107,8 +107,8 @@ export default {
     watch:{
       '$store.state.currentUser'(u){
         /* Este watcher cambia la ruta una vez carga firebase y el estado de vuex, porque ambos se demoran en responder */
-        if(u && u.uid && this.$route.path!="/perfil"){
-          this.$router.replace("/perfil")
+        if(u && u.uid && this.$route.path!="/agenda"){
+          this.$router.replace("/agenda")
         }else if(this.$route.path!="/"){
           this.$router.replace("/")
         }

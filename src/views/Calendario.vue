@@ -110,6 +110,17 @@
                                             <h2 class="text-uppercase">Agendar</h2>
                                         </v-col>
 
+                                        <v-col cols="12" md="6" >
+                                            <v-text-field 
+                                                type="text" label="RUN" @change="buscarPacienteConRut" v-model="runBuscar">
+                                            </v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="6" >
+                                            <v-text-field 
+                                                type="text" label="Nombre" v-model="nombreCompleto">
+                                            </v-text-field>
+                                        </v-col>
+
                                         <v-col cols="12" >
                                             <!-- <v-text-field 
                                                 type="text" label="Agregar nombre de evento" v-model="name">
@@ -220,10 +231,10 @@
 
 
                     <v-menu
-                    v-model="selectedOpen"
-                    :close-on-content-click="false"
-                    :activator="selectedElement"
-                    offset-x
+                        v-model="selectedOpen"
+                        :close-on-content-click="false"
+                        :activator="selectedElement"
+                        offset-x
                     >
                     <v-card
                         color="grey lighten-4"
@@ -231,34 +242,42 @@
                         flat
                     >
                         <v-toolbar
-                        :color="selectedEvent.color"
-                        dark
+                            :color="selectedEvent.color"
+                            dark
                         >
-                        <v-btn icon @click="deleteEvent(selectedEvent)">
-                            <v-icon>mdi-delete</v-icon>
-                        </v-btn>
-                        <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-                        <v-spacer></v-spacer>
+                            <v-btn icon @click="deleteEvent(selectedEvent)">
+                                <v-icon>mdi-delete</v-icon>
+                            </v-btn>
+                            <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                            <v-spacer></v-spacer>
                         </v-toolbar>
                         <v-card-text>
-                        <v-form v-if="currentEditing !== selectedEvent.id" >
-                            {{selectedEvent.name}} - {{selectedEvent.details}}
-                        </v-form>
+                            <v-form v-if="currentEditing !== selectedEvent.id" >
+                                <p>
+                                    <span v-if="selectedEvent.run"><b>RUN:</b> {{ selectedEvent.run }}
+                                    <br> </span>
+                                    <span v-if="selectedEvent.nameClient">
+                                        <b>Nombre:</b> {{selectedEvent.nameClient}}
+                                        <br>
+                                    </span>
+                                    <span v-if="selectedEvent.details"><b>Detalle:</b> {{selectedEvent.details}}</span>
+                                </p>
+                            </v-form>
 
-                        <v-form v-else>
-                            <v-text-field 
-                                type="text" v-model="selectedEvent.name"
-                                label="Edita nombre">
-                            </v-text-field>
+                            <v-form v-else>
+                                <v-text-field 
+                                    type="text" v-model="selectedEvent.name"
+                                    label="Edita nombre">
+                                </v-text-field>
 
-                            <textarea-autosize
-                                v-model="selectedEvent.details"
-                                type="text"
-                                style="width: 100%"
-                                :min-height="100">
-                            </textarea-autosize>
+                                <textarea-autosize
+                                    v-model="selectedEvent.details"
+                                    type="text"
+                                    style="width: 100%"
+                                    :min-height="100">
+                                </textarea-autosize>
 
-                        </v-form>
+                            </v-form>
                         </v-card-text>
                         <v-card-actions>
                         <v-btn
@@ -299,6 +318,7 @@
                 day: 'Día',
                 '4day': '4 Días',
             },
+            runBuscar: null,
             selectedEvent: {},
             selectedElement: null,
             selectedOpen: false,
@@ -319,6 +339,7 @@
             menu3: false,
             modal3: false,
             weekday: [1, 2, 3, 4, 5, 6],
+            client: [],
         }),
 
         computed:{
@@ -349,7 +370,16 @@
                 }
                 console.log(date)
                 return date
-            }
+            },
+
+            nombreCompleto () {
+                let cliente = this.client
+                let nombreCompleto = ''
+                cliente.forEach(client => {
+                    nombreCompleto = client.name + ' ' + client.lastName
+                })
+                return nombreCompleto
+            },
         },
 
         mounted () {
@@ -360,6 +390,33 @@
         },
 
         methods: {
+            async buscarPacienteConRut () {
+                try {
+                    const clientRef = db.collection('clients');
+                    const snapshot = await clientRef.where('run', '==', this.runBuscar).get();
+                    this.client = []
+                    if (snapshot.empty) {
+                        console.log('No matching documents.');
+                        return;
+                    }
+                    let client = []
+                    snapshot.forEach(doc => {
+                        let clientData = doc.data()
+                        clientData.id = doc.id
+                        client.push({
+                            name: clientData.name,
+                            lastName: clientData.lastName,
+                            id: clientData.id,
+                        })
+                    });
+
+                    this.client = client
+                } catch (error) {
+                    console.error(error)
+                }
+                // console.log(this.runBuscar)
+            },
+
             async addEvent() {
                 try {
                     if(this.name && this.start && this.end) {
@@ -368,16 +425,20 @@
                             details: this.details,
                             start: this.submitableStartDateTime,
                             end: this.submitableEndDateTime,
-                            color: this.color
+                            color: this.color,
+                            nameClient: this.nombreCompleto,
+                            run: this.runBuscar,
                         })
 
-                        this.getEvents()
+                        this.getEvents() 
 
                         this.name = null
                         this.details = null
                         this.start = null
                         this.end = null
                         this.color = '#1976D2'
+                        this.nameClient = null
+                        this.run = null
 
                     } else {
                         console.log('Campos obligatorios')
@@ -398,8 +459,6 @@
                         eventoData.id = doc.id
                         const end = new Date(eventoData.end.seconds * 1000)
                         const start = new Date(eventoData.start.seconds * 1000)
-                        // moment(this.end).format('MM-DD-YYYY')
-                        // console.log(moment(end).format('YYYY-MM-DD HH:mm')) // yyy-mm-dd hh:mm 
                         events.push({
                             color: eventoData.color,
                             details: eventoData.details,
@@ -407,6 +466,8 @@
                             id: eventoData.id,
                             name: eventoData.name,
                             start: moment(start).format('YYYY-MM-DD HH:mm'),
+                            nameClient: eventoData.nameClient,
+                            run: eventoData.run,
                         })
                     })
 

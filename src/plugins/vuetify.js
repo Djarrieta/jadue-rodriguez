@@ -1,18 +1,8 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib/framework';
-<<<<<<< HEAD
 
-/*
- * Info para traducir vuetify
- * https://vuetifyjs.com/en/features/internationalization/#getting-started
- */
-
- // Translation provided by Vuetify (javascript)
 import es from 'vuetify/es5/locale/es'
-=======
-import zhHans from 'vuetify/es5/locale/zh-Hans'
 import colors from 'vuetify/lib/util/colors'
->>>>>>> feature/crud-usuarios
 
 Vue.use(Vuetify);
 

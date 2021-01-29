@@ -22,90 +22,12 @@
                     >
                         Hoy
                     </v-btn>
-<<<<<<< HEAD:src/views/Calendario.vue
                     <v-btn
                         fab
                         text
                         small
                         color="grey darken-2"
                         @click="prev"
-=======
-                    </template>
-                    <v-list>
-                    <v-list-item @click="type = 'day'">
-                        <v-list-item-title>Día</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item @click="type = 'week'">
-                        <v-list-item-title>Semana</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item @click="type = 'month'">
-                        <v-list-item-title>Mes</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item @click="type = '4day'">
-                        <v-list-item-title>4 días</v-list-item-title>
-                    </v-list-item>
-                    </v-list>
-                </v-menu>
-                </v-toolbar>
-            </v-sheet>
-            <v-sheet height="600">
-                <v-calendar
-                ref="calendar"
-                v-model="focus"
-                color="primary"
-                :events="events"
-                :short-weekdays="false"
-                :event-color="getEventColor"
-                :type="type"
-                @click:event="showEvent"
-                @click:more="viewDay"
-                @click:date="viewDay"
-                ></v-calendar>
-
-
-                <!-- Modal agregar evento -->
-                <v-dialog v-model="dialog">
-                    <v-card>
-                        <v-container>
-                            <v-form @submit.prevent="addEvent">
-                                <h2 class="text-uppercase">Agendar</h2>
-                                <v-text-field 
-                                    type="text" label="Agregar nombre de evento" v-model="name">
-                                </v-text-field>
-                                <v-text-field 
-                                    type="text" label="Agregar detalle" v-model="details">
-                                </v-text-field>
-                                <v-text-field 
-                                    type="date" label="Fecha inicio" v-model="start">
-                                </v-text-field>
-                                <v-text-field 
-                                    type="date" label="Fecha término" v-model="end">
-                                </v-text-field>
-                                <v-text-field 
-                                    type="color" label="Color" v-model="color">
-                                </v-text-field>
-                                <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog=false">Agregar</v-btn>
-                            </v-form>
-                        </v-container>
-                    </v-card>
-                </v-dialog>
-
-
-                <v-menu
-                v-model="selectedOpen"
-                :close-on-content-click="false"
-                :activator="selectedElement"
-                offset-x
-                >
-                <v-card
-                    color="grey lighten-4"
-                    min-width="350px"
-                    flat
-                >
-                    <v-toolbar
-                    :color="selectedEvent.color"
-                    dark
->>>>>>> feature/crud-usuarios:src/views/Agenda.vue
                     >
                         <v-icon small>
                         mdi-chevron-left
@@ -387,7 +309,6 @@
     import {db} from "../main"
     import moment from 'moment'
     export default {
-        name:"Agenda",
         data: () => ({
             focus: '',
             type: 'month',
@@ -420,7 +341,6 @@
             weekday: [1, 2, 3, 4, 5, 6],
             client: [],
         }),
-
         computed:{
             submitableStartDateTime () {
                 const date = new Date(moment(this.start).format('MM-DD-YYYY'))
@@ -450,7 +370,6 @@
                 console.log(date)
                 return date
             },
-
             nombreCompleto () {
                 let cliente = this.client
                 let nombreCompleto = ''
@@ -460,14 +379,12 @@
                 return nombreCompleto
             },
         },
-
         mounted () {
             this.$refs.calendar.checkChange()
         },
         created () {
             this.getEvents()
         },
-
         methods: {
             async buscarPacienteConRut () {
                 try {
@@ -488,14 +405,12 @@
                             id: clientData.id,
                         })
                     });
-
                     this.client = client
                 } catch (error) {
                     console.error(error)
                 }
                 // console.log(this.runBuscar)
             },
-
             async addEvent() {
                 try {
                     if(this.name && this.start && this.end) {
@@ -508,9 +423,7 @@
                             nameClient: this.nombreCompleto,
                             run: this.runBuscar,
                         })
-
                         this.getEvents() 
-
                         this.name = null
                         this.details = null
                         this.start = null
@@ -518,7 +431,6 @@
                         this.color = '#1976D2'
                         this.nameClient = null
                         this.run = null
-
                     } else {
                         console.log('Campos obligatorios')
                     }
@@ -526,13 +438,10 @@
                     console.error(error)
                 }
             },
-
             async getEvents() {
                 try {
                     const snapshot = await db.collection('events').get();
-
                     const events = []
-
                     snapshot.forEach(doc => {
                         let eventoData = doc.data()
                         eventoData.id = doc.id
@@ -549,14 +458,11 @@
                             run: eventoData.run,
                         })
                     })
-
                     this.events = events
-
                 } catch (e) {
                     console.error(e)
                 }
             },
-
             async deleteEvent (ev) {
                 try {
                     await db.collection('events').doc(ev.id).delete()
@@ -566,11 +472,9 @@
                     console.error(error)
                 }
             },
-
             editEvent(id) {
                 this.currentEditing = id
             },
-
             async updateEvent(ev) {
                 try {
                     await db.collection('events').doc(ev.id).update({
@@ -579,17 +483,14 @@
                     })
                     this.selectedOpen = false
                     this.currentEditing = null
-
                 } catch (error) {
                     console.error(error)
                 }
             },
-
             updateRange ({start, end}) {
                 this.start = start
                 this.end = end
             },
-
             viewDay ({ date }) {
                 this.focus = date
                 this.type = 'day'
@@ -614,14 +515,12 @@
                     this.selectedOpen = true
                 }, 10)
                 }
-
                 if (this.selectedOpen) {
                 this.selectedOpen = false
                 setTimeout(open, 10)
                 } else {
                 open()
                 }
-
                 nativeEvent.stopPropagation()
             },
             

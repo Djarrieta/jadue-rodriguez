@@ -1,17 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-<<<<<<< HEAD
-import Home from '../views/Home.vue'
-import Calendario from '../views/Calendario.vue'
-import Pacientes from '../views/Pacientes.vue'
-=======
 import store from "@/store/index.js"
->>>>>>> feature/crud-usuarios
 
 import Ingreso from '@/views/Ingreso.vue'
 import Agenda from '@/views/Agenda.vue'
 import Perfil from '@/views/Perfil.vue'
 import Usuarios from '@/views/Usuarios.vue'
+import Pacientes from '@/views/Pacientes.vue'
 
 Vue.use(VueRouter)
 
@@ -33,20 +28,12 @@ const routes = [
     }
   },
   {
-<<<<<<< HEAD
     path: '/pacientes',
     name: 'Pacientes',
     component: Pacientes
   },
+
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-=======
     path: '/perfil',
     name: 'Perfil',
     component: Perfil,
@@ -62,7 +49,6 @@ const routes = [
       auth:true
     }
   },
->>>>>>> feature/crud-usuarios
 ]
 
 const router = new VueRouter({

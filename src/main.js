@@ -33,7 +33,6 @@ firebase.auth().onAuthStateChanged((u)=>{
   if(u){
     db.collection("users").doc(u.uid.toString()).get()
     .then(u=>{
-      
       store.state.currentUser={...u.data(),uid:u.id}
       mountApp()
     })

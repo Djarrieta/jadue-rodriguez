@@ -5,6 +5,7 @@ import store from "@/store/index.js"
 import Ingreso from '@/views/Ingreso.vue'
 import Agenda from '@/views/Agenda.vue'
 import Perfil from '@/views/Perfil.vue'
+import Usuarios from '@/views/Usuarios.vue'
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,14 @@ const routes = [
     path: '/perfil',
     name: 'Perfil',
     component: Perfil,
+    meta:{
+      auth:true
+    }
+  },
+  {
+    path: '/Usuarios',
+    name: 'Usuarios',
+    component: Usuarios,
     meta:{
       auth:true
     }

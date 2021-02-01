@@ -19,6 +19,8 @@
                         :items="clients"
                         :search="search"
                         class="elevation-1"
+                        :loading="loadingClient"
+                        loading-text="Cargando... Por favor espere"
                     >
                         <template v-slot:top>
                             <v-toolbar flat>
@@ -131,6 +133,12 @@
                         </template>
 
                         <template v-slot:item.actions="{ item }">
+                            <router-link class="text-decoration-none mr-2" :to="{ name: 'DetallePaciente', params: { id:  item.id } }">
+                                <v-icon small>
+                                    mdi-account-details
+                                </v-icon>
+                            </router-link>
+
                             <v-icon
                                 small
                                 color="green"
@@ -139,6 +147,7 @@
                             >
                             mdi-pencil
                             </v-icon>
+                            
                             <v-icon
                                 small
                                 color="red"
@@ -146,6 +155,7 @@
                             >
                                 mdi-delete
                             </v-icon>
+                            
                         </template>
                     </v-data-table>
                 </v-card>
@@ -183,7 +193,7 @@ export default {
           { text: 'E-mail', value: 'email' },
           { text: 'Dirección', value: 'address' },
           { text: 'Ciudad', value: 'city' },
-          { text: 'Actions', value: 'actions', sortable: false },
+          { text: 'Opciones', value: 'actions', sortable: false },
         ],
         editedItem: {
             name: '',
@@ -208,6 +218,7 @@ export default {
             city: '',
             profession: '',
         },
+        loadingClient: true,
     }),
 
     computed:{
@@ -363,8 +374,9 @@ export default {
                         phone: clientData.phone,
                         email: clientData.email,
                     })
-                    this.clients = clients
                 })
+                this.clients = clients
+                this.loadingClient = false
             } catch (error) {
                 console.error(error)
             }

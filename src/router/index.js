@@ -7,6 +7,7 @@ import Agenda from '@/views/Agenda.vue'
 import Perfil from '@/views/Perfil.vue'
 import Usuarios from '@/views/Usuarios.vue'
 import Pacientes from '@/views/Pacientes.vue'
+import DetallePaciente from '@/views/DetallePaciente.vue'
 
 Vue.use(VueRouter)
 
@@ -30,7 +31,19 @@ const routes = [
   {
     path: '/pacientes',
     name: 'Pacientes',
-    component: Pacientes
+    component: Pacientes,
+    meta:{
+      auth:true
+    }
+  },
+  
+  {
+    path: '/detalle-paciente/:id',
+    name: 'DetallePaciente',
+    component: DetallePaciente,
+    meta:{
+      auth:true
+    }
   },
 
   {

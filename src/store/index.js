@@ -6,5 +6,10 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     currentUser:null,
+    problems:null,
+    alert:{
+      text:null,
+      icon:"success"
+    }
   },
 })

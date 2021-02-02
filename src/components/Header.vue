@@ -76,6 +76,15 @@
           </v-list-item>
         </v-list>
     </v-navigation-drawer>
+    <!-- Alertas -->
+    <v-alert
+      v-if="$store.state.alert.text"
+      :type="$store.state.alert.icon"
+      transition="scale-transition"
+      absolute
+      dense>
+      {{ $store.state.alert.text }}
+    </v-alert>
   </nav>
 </template>
 
@@ -112,7 +121,16 @@ export default {
         }else if(this.$route.path!="/"){
           this.$router.replace("/")
         }
-       }
+       },
+       /* Desaparece automáticamente el mensaje de error */
+      '$store.state.alert.text'(){
+        setTimeout(() => {
+          this.$store.state.alert={
+                                    text:null,
+                                    icon:"success"
+                                  }}, 2000);
+        
+      }
     },
     methods:{
       signOut(){

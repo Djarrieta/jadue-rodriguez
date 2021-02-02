@@ -30,7 +30,10 @@ const routes = [
   {
     path: '/pacientes',
     name: 'Pacientes',
-    component: Pacientes
+    component: Pacientes,
+    meta:{
+      auth:true
+    }
   },
 
   {

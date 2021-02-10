@@ -131,17 +131,17 @@
                       ></v-select>
                     </v-col>
 
-                    <v-col cols="12" md="10" >
+                    <v-col cols="12" md="12" >
                       <v-text-field 
                         type="text" label="Agregar detalle" v-model="details">
                       </v-text-field>
                     </v-col>
 
-                    <v-col cols="12" md="2" >
+                    <!-- <v-col cols="12" md="2" >
                       <v-text-field 
                         type="color" label="Color" v-model="color">
                       </v-text-field>
-                    </v-col>
+                    </v-col> -->
                     
                     <v-col cols="12" md="6">
                       <v-text-field 
@@ -368,6 +368,17 @@
         console.log(date)
         return date
       },
+      selectColor() {
+        let colorSelected
+        if(this.name === 'Cita') {
+          colorSelected = '#123456'
+        } else if(this.name === 'Control') {
+          colorSelected = '#901020'
+        } else if(this.name === 'Bloqueo') {
+          colorSelected = '#000001'
+        }
+        return colorSelected;
+      },
       nombreCompleto () {
         let cliente = this.client
         let nombreCompleto = ''
@@ -417,7 +428,7 @@
               details: this.details,
               start: this.submitableStartDateTime,
               end: this.submitableEndDateTime,
-              color: this.color,
+              color: this.selectColor,
               nameClient: this.nombreCompleto,
               run: this.runBuscar,
             })

@@ -109,17 +109,21 @@
                       <h2 class="text-uppercase">Agendar</h2>
                     </v-col>
 
+                    <!-- Buscar run -->
                     <v-col cols="12" md="6" >
                       <v-text-field 
                         type="text" label="RUN" @change="buscarPacienteConRut" v-model="runBuscar">
                       </v-text-field>
                     </v-col>
+
+                    <!-- Nombre completo -->
                     <v-col cols="12" md="6" >
                       <v-text-field 
                         type="text" label="Nombre" v-model="nombreCompleto">
                       </v-text-field>
                     </v-col>
 
+                    <!-- Seleccionar evento -->
                     <v-col cols="12" md="6" >
                       <v-select
                         :items="tipoEvento"
@@ -128,6 +132,7 @@
                       ></v-select>
                     </v-col>
                     
+                    <!-- Usuarios -->
                     <v-col cols="12" md="6" >
                       <v-select
                         :items="users"
@@ -141,23 +146,20 @@
                       ></v-select>
                     </v-col>
 
+                    <!-- details -->
                     <v-col cols="12" md="12" >
                       <v-text-field 
                         type="text" label="Agregar detalle" v-model="details">
                       </v-text-field>
                     </v-col>
-
-                    <!-- <v-col cols="12" md="2" >
-                      <v-text-field 
-                        type="color" label="Color" v-model="color">
-                      </v-text-field>
-                    </v-col> -->
                     
+                    <!-- start -->
                     <v-col cols="12" md="6">
                       <v-text-field 
                         type="date" label="Fecha inicio" v-model="start">
                       </v-text-field>
                     </v-col>
+                    <!-- Start time -->
                     <v-col cols="12" md="6">
                       <!-- Start time -->
                       <v-menu
@@ -229,6 +231,7 @@
                       </v-menu>
                     </v-col>
                     
+                    <!-- Button submit -->
                     <v-col cols="12" md="6">
                       <v-btn type="submit" color="primary" class="mr-4" @click.stop="dialog=false">Agregar</v-btn>
                     </v-col>
@@ -272,19 +275,37 @@
                     <span v-if="selectedEvent.user"><b>Profesional:</b> {{selectedEvent.user.name}}</span>
                   </p>
                 </v-form>
-
                 <v-form v-else>
+                  <!-- EDITAR FORM -->
+                  <v-select
+                    :items="tipoEvento"
+                    label="Selecionar evento"
+                    v-model="selectedEvent.name"
+                  ></v-select>
+                  
                   <v-text-field 
-                    type="text" v-model="selectedEvent.name"
-                    label="Edita nombre">
+                    type="text" label="RUN" @change="buscarPacienteConRut" v-model="selectedEvent.run">
+                  </v-text-field>
+                  
+                  <v-text-field 
+                    type="text" label="Nombre" v-model="selectedEvent.nameClient">
                   </v-text-field>
 
                   <textarea-autosize
+                    label="Detalle"
                     v-model="selectedEvent.details"
                     type="text"
                     style="width: 100%"
                     :min-height="100">
                   </textarea-autosize>
+
+                  <v-select
+                    :items="users"
+                    label="Usuario"
+                    v-model="selectedEvent.user"
+                    item-text="name"
+                    item-value="id"
+                  ></v-select>
 
                 </v-form>
               </v-card-text>
@@ -292,7 +313,7 @@
                 <v-btn
                   text
                   color="secondary"
-                  @click="selectedOpen = false; currentEditing = null;"
+                  @click="selectedOpen = false; currentEditing = null; getEvents()"
                 >
                   Cancelar
                 </v-btn>
@@ -382,11 +403,11 @@
       },
       selectColor() {
         let colorSelected
-        if(this.name === 'Cita') {
+        if(this.name === 'Cita'|| this.selectedEvent.name === 'Cita') {
           colorSelected = '#123456'
-        } else if(this.name === 'Control') {
+        } else if(this.name === 'Control' || this.selectedEvent.name === 'Control') {
           colorSelected = '#901020'
-        } else if(this.name === 'Bloqueo') {
+        } else if(this.name === 'Bloqueo' || this.selectedEvent.name === 'Bloqueo') {
           colorSelected = '#000001'
         }
         return colorSelected;
@@ -411,7 +432,16 @@
       async buscarPacienteConRut () {
         try {
           const clientRef = db.collection('clients');
-          const snapshot = await clientRef.where('run', '==', this.runBuscar).get();
+          let run
+          if(this.runBuscar) {
+            run = this.runBuscar
+          } else if(this.selectedEvent.run) {
+            run = this.selectedEvent.run
+          }
+
+          
+
+          const snapshot = await clientRef.where('run', '==', run).get();
           this.client = []
           if (snapshot.empty) {
             console.log('No matching documents.');
@@ -428,6 +458,8 @@
             })
           });
           this.client = client
+          this.selectedEvent.nameClient = client[0].name + ' ' + client[0].lastName
+          console.log(client[0].name)
         } catch (error) {
           console.error(error)
         }
@@ -504,8 +536,13 @@
         try {
           await db.collection('events').doc(ev.id).update({
             name: ev.name,
-            details: ev.details
+            details: ev.details,
+            color: this.selectColor,
+            run: ev.run,
+            nameClient: ev.nameClient,
+            user: ev.user,
           })
+          this.getEvents()
           this.selectedOpen = false
           this.currentEditing = null
         } catch (error) {
@@ -534,15 +571,15 @@
       },
       showEvent ({ nativeEvent, event }) {
         const open = () => {
-        this.selectedEvent = event
-        this.selectedElement = nativeEvent.target
-        setTimeout(() => {
-          this.selectedOpen = true
-        }, 10)
+          this.selectedEvent = event
+          this.selectedElement = nativeEvent.target
+          setTimeout(() => {
+            this.selectedOpen = true
+          }, 10)
         }
         if (this.selectedOpen) {
-        this.selectedOpen = false
-        setTimeout(open, 10)
+          this.selectedOpen = false
+          setTimeout(open, 10)
         } else {
           open()
         }

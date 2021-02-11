@@ -65,20 +65,20 @@
               </v-icon>
             </v-btn>
             </template>
-            <v-list>
-            <v-list-item @click="type = 'day'">
-              <v-list-item-title>Día</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="type = 'week'">
-              <v-list-item-title>Semana</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="type = 'month'">
-              <v-list-item-title>Mes</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="type = '4day'">
-              <v-list-item-title>4 días</v-list-item-title>
-            </v-list-item>
-            </v-list>
+              <v-list>
+                <v-list-item @click="type = 'day'">
+                  <v-list-item-title>Día</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="type = 'week'">
+                  <v-list-item-title>Semana</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="type = 'month'">
+                  <v-list-item-title>Mes</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="type = '4day'">
+                  <v-list-item-title>4 días</v-list-item-title>
+                </v-list-item>
+              </v-list>
           </v-menu>
           </v-toolbar>
         </v-sheet>
@@ -120,14 +120,24 @@
                       </v-text-field>
                     </v-col>
 
-                    <v-col cols="12" >
-                      <!-- <v-text-field 
-                        type="text" label="Agregar nombre de evento" v-model="name">
-                      </v-text-field> -->
+                    <v-col cols="12" md="6" >
                       <v-select
                         :items="tipoEvento"
                         label="Selecionar evento"
                         v-model="name"
+                      ></v-select>
+                    </v-col>
+                    
+                    <v-col cols="12" md="6" >
+                      <v-select
+                        :items="users"
+                        v-model="user"
+                        item-text="name"
+                        item-value="id"
+                        label="Usuario"
+                        persistent-hint
+                        return-object
+                        single-line
                       ></v-select>
                     </v-col>
 
@@ -234,68 +244,69 @@
             :activator="selectedElement"
             offset-x
           >
-          <v-card
-            color="grey lighten-4"
-            min-width="350px"
-            flat
-          >
-            <v-toolbar
-              :color="selectedEvent.color"
-              dark
+            <v-card
+              color="grey lighten-4"
+              min-width="350px"
+              flat
             >
-              <v-btn icon @click="deleteEvent(selectedEvent)">
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-              <v-spacer></v-spacer>
-            </v-toolbar>
-            <v-card-text>
-              <v-form v-if="currentEditing !== selectedEvent.id" >
-                <p>
-                  <span v-if="selectedEvent.run"><b>RUN:</b> {{ selectedEvent.run }}
-                  <br> </span>
-                  <span v-if="selectedEvent.nameClient">
-                    <b>Nombre:</b> {{selectedEvent.nameClient}}
-                    <br>
-                  </span>
-                  <span v-if="selectedEvent.details"><b>Detalle:</b> {{selectedEvent.details}}</span>
-                </p>
-              </v-form>
+              <v-toolbar
+                :color="selectedEvent.color"
+                dark
+              >
+                <v-btn icon @click="deleteEvent(selectedEvent)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+                <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                <v-spacer></v-spacer>
+              </v-toolbar>
+              <v-card-text>
+                <v-form v-if="currentEditing !== selectedEvent.id" >
+                  <p>
+                    <span v-if="selectedEvent.run"><b>RUN:</b> {{ selectedEvent.run }}
+                    <br> </span>
+                    <span v-if="selectedEvent.nameClient">
+                      <b>Nombre:</b> {{selectedEvent.nameClient}}
+                      <br>
+                    </span>
+                    <span v-if="selectedEvent.details"><b>Detalle:</b> {{selectedEvent.details}}<br></span>
+                    <span v-if="selectedEvent.user"><b>Profesional:</b> {{selectedEvent.user.name}}</span>
+                  </p>
+                </v-form>
 
-              <v-form v-else>
-                <v-text-field 
-                  type="text" v-model="selectedEvent.name"
-                  label="Edita nombre">
-                </v-text-field>
+                <v-form v-else>
+                  <v-text-field 
+                    type="text" v-model="selectedEvent.name"
+                    label="Edita nombre">
+                  </v-text-field>
 
-                <textarea-autosize
-                  v-model="selectedEvent.details"
-                  type="text"
-                  style="width: 100%"
-                  :min-height="100">
-                </textarea-autosize>
+                  <textarea-autosize
+                    v-model="selectedEvent.details"
+                    type="text"
+                    style="width: 100%"
+                    :min-height="100">
+                  </textarea-autosize>
 
-              </v-form>
-            </v-card-text>
-            <v-card-actions>
-            <v-btn
-              text
-              color="secondary"
-              @click="selectedOpen = false; currentEditing = null;"
-            >
-              Cancelar
-            </v-btn>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  text
+                  color="secondary"
+                  @click="selectedOpen = false; currentEditing = null;"
+                >
+                  Cancelar
+                </v-btn>
 
-            <v-btn text v-if="currentEditing !== selectedEvent.id" 
-              @click.prevent="editEvent(selectedEvent.id)">
-              Editar
-            </v-btn>
+                <v-btn text v-if="currentEditing !== selectedEvent.id" 
+                  @click.prevent="editEvent(selectedEvent.id)">
+                  Editar
+                </v-btn>
 
-            <v-btn text v-else @click.prevent="updateEvent(selectedEvent)">
-              Guardar cambios
-            </v-btn>
-            </v-card-actions>
-          </v-card>
+                <v-btn text v-else @click.prevent="updateEvent(selectedEvent)">
+                  Guardar cambios
+                </v-btn>
+              </v-card-actions>
+            </v-card>
           </v-menu>
         </v-sheet>
       </v-col>
@@ -321,7 +332,8 @@
       selectedElement: null,
       selectedOpen: false,
       events: [],
-      colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
+      users: [],
+      user: '',
       tipoEvento: ['Cita', 'Control', 'Bloqueo'],
       color: '#1976D2',
       start: new Date(),
@@ -389,7 +401,8 @@
       },
     },
     mounted () {
-      this.$refs.calendar.checkChange()
+      this.$refs.calendar.checkChange(),
+      this.getUsers()
     },
     created () {
       this.getEvents()
@@ -431,6 +444,7 @@
               color: this.selectColor,
               nameClient: this.nombreCompleto,
               run: this.runBuscar,
+              user: this.user,
             })
             this.getEvents() 
             this.name = null
@@ -440,6 +454,7 @@
             this.color = '#1976D2'
             this.nameClient = null
             this.run = null
+            this.user = null
           } else {
             console.log('Campos obligatorios')
           }
@@ -465,6 +480,7 @@
               start: moment(start).format('YYYY-MM-DD HH:mm'),
               nameClient: eventoData.nameClient,
               run: eventoData.run,
+              user: eventoData.user,
             })
           })
           this.events = events
@@ -528,14 +544,30 @@
         this.selectedOpen = false
         setTimeout(open, 10)
         } else {
-        open()
+          open()
         }
         nativeEvent.stopPropagation()
       },
-      
-      rnd (a, b) {
-        return Math.floor((b - a + 1) * Math.random()) + a
+
+      async getUsers() {
+        try {
+          const snapshot = await db.collection('users').get();
+          const users = []
+          snapshot.forEach(doc => {
+            let userData = doc.data()
+            userData.id = doc.id
+            users.push({
+              id: userData.uid,
+              name: userData.name,
+              email: userData.email,
+            })
+            this.users = users
+          })
+        } catch (error) {
+          console.error(error)
+        }
       },
+      
     },
   }
 </script>

@@ -305,6 +305,9 @@
                     v-model="selectedEvent.user"
                     item-text="name"
                     item-value="id"
+                    persistent-hint
+                    return-object
+                    single-line
                   ></v-select>
 
                 </v-form>
@@ -403,12 +406,22 @@
       },
       selectColor() {
         let colorSelected
-        if(this.name === 'Cita'|| this.selectedEvent.name === 'Cita') {
-          colorSelected = '#123456'
-        } else if(this.name === 'Control' || this.selectedEvent.name === 'Control') {
-          colorSelected = '#901020'
-        } else if(this.name === 'Bloqueo' || this.selectedEvent.name === 'Bloqueo') {
-          colorSelected = '#000001'
+        if(this.name) {
+          if(this.name === 'Cita') {
+            colorSelected = '#123456'
+          } else if(this.name === 'Control') {
+            colorSelected = '#901020'
+          } else if(this.name === 'Bloqueo') {
+            colorSelected = '#000001'
+          }
+        } else if(this.selectedEvent.name) {
+          if(this.selectedEvent.name === 'Cita') {
+            colorSelected = '#123456'
+          } else if(this.selectedEvent.name === 'Control') {
+            colorSelected = '#901020'
+          } else if(this.selectedEvent.name === 'Bloqueo') {
+            colorSelected = '#000001'
+          }
         }
         return colorSelected;
       },

@@ -61,180 +61,220 @@
 							</v-toolbar>
 							<!-- Formulario Recetas -->
 								<v-form class="mt-16  " v-model="info.valid">
-									<v-container class="">
-										<!-- Ojo Derecho -->
-										<h2 class=" ">OD</h2>
-										<v-row>
-											<!-- Esfera -->
-											<v-col
-												cols="2"
-											>
-												<v-text-field
-													v-model="info.OD_esfera"
-													label="Esfera"
-													required
-												></v-text-field>
-											</v-col>
-											<!-- cilindro -->
-											<v-col
-												cols="2"
-											>
-												<v-text-field
-													v-model="info.OD_cilindro"
-													label="Cilindro"
-													required
-												></v-text-field>
-											</v-col>
-											<!-- Eje -->
-											<v-col
-												cols="2"
-											>
-												<v-text-field
-													v-model="info.OD_eje"
-													label="Eje"
-													required
-												></v-text-field>
-											</v-col>
-											<!-- Add -->
-											<v-col
-												cols="2"
-											>
-												<v-text-field
-													v-model="info.OD_add"
-													label="add"
-													required
-												></v-text-field>
-											</v-col>
-											<!-- 20/-->
-											<v-col
-												cols="2"
-											>
-												<v-text-field
-													v-model="info.OD_20"
-													label="20/"
-													required
-												></v-text-field>
-											</v-col>
-										</v-row>
-
-										<!-- Ojo Izquierdo -->
-										<h2>OI</h2>
-										<v-row>
-											<!-- Esfera -->
-											<v-col
-												cols="2"
-											>
-												<v-text-field
-													v-model="info.OI_esfera"
-													label="Esfera"
-													required
-												></v-text-field>
-											</v-col>
-											<!-- cilindro -->
-											<v-col
-												cols="2"
-											>
-												<v-text-field
-													v-model="info.OI_cilindro"
-													label="Cilindro"
-													required
-												></v-text-field>
-											</v-col>
-											<!-- Eje -->
-											<v-col
-												cols="2"
-											>
-												<v-text-field
-													v-model="info.OI_eje"
-													label="Eje"
-													required
-												></v-text-field>
-											</v-col>
-											<!-- Add -->
-											<v-col
-												cols="2"
-											>
-												<v-text-field
-													v-model="info.OI_add"
-													label="add"
-													required
-												></v-text-field>
-											</v-col>
-											<!-- 20/-->
-											<v-col
-												cols="2"
-											>
-												<v-text-field
-													v-model="info.OI_20"
-													label="20/"
-													required
-												></v-text-field>
-											</v-col>
-										</v-row>
-
-										<!-- Generales Grupo1-->
-										<h2>GENERALES</h2>
-										<v-row>
-											<!-- Estado Motor -->
-											<v-col cols="3">
-												<v-text-field
-													v-model="info.estadoMotor"
-													label="Estado Motor"
-													required/>
-											</v-col>
-											<!-- Segmento Anterior -->
-											<v-col cols="3">
-												<v-text-field
-													v-model="info.segmentoAnterior"
-													label="Segmento Anterior"
-													required/>
-											</v-col>
-											<!-- Fondo de Ojo -->
-											<v-col cols="3">
-												<v-text-field
-													v-model="info.fondoDeOjo"
-													label="Fondo de Ojo"
-													required/>
-											</v-col>
-										</v-row>
-
-										<!-- Generales Grupo2-->
-										<v-row>
-											<!-- Uso de Anteojos -->
-											<v-col cols="3">
-												<v-text-field
-													v-model="info.usoDeAnteojos"
-													label="Uso de Anteojos"
-													required/>
-											</v-col>
-											<!-- Tipo de Lente Sugerido -->
-											<v-col cols="3">
-												<v-text-field
-													v-model="info.tipoDeLenteSugerido"
-													label="Tipo de Lente Sugerido"
-													required/>
-											</v-col>
-											<!-- Distancia Pupilar -->
-											<v-col cols="3">
-												<v-text-field
-													v-model="info.distanciaPupilar"
-													label="Distancia Pupilar"
-													required/>
-											</v-col>
-										</v-row>
+									<v-container>
+										<v-radio-group
+											class="d-flex flex-row"
+											v-model="typePrescriptrion">
+											<h1>Tipo de Receta</h1>
+											<v-radio label="Lentes" value="Lentes"/>
+											<v-radio label="Gotas" value="Gotas"/>
+										</v-radio-group>
 									</v-container>
-									<!-- Observaciones -->
-									<v-textarea
-											outlined
-											name="input-7-4"
-											label="Observaciones"
-											v-model="info.observaciones"/>
-									<!-- Control -->
-									<v-textarea
-											outlined
-											name="input-7-4"
-											label="Control"
-											v-model="info.control"/>
+									<!-- RECETA LENTES -->
+									<div v-if="typePrescriptrion==='Lentes'">
+										<v-container class="">
+											<h1>RECETA LENTES</h1>
+											<!-- Ojo Derecho -->
+											<h3 class=" ">OD</h3>
+											<v-row>
+												<!-- Esfera -->
+												<v-col
+													cols="2"
+												>
+													<v-text-field
+														v-model="info.OD_esfera"
+														label="Esfera"
+														required
+													></v-text-field>
+												</v-col>
+												<!-- cilindro -->
+												<v-col
+													cols="2"
+												>
+													<v-text-field
+														v-model="info.OD_cilindro"
+														label="Cilindro"
+														required
+													></v-text-field>
+												</v-col>
+												<!-- Eje -->
+												<v-col
+													cols="2"
+												>
+													<v-text-field
+														v-model="info.OD_eje"
+														label="Eje"
+														required
+													></v-text-field>
+												</v-col>
+												<!-- Add -->
+												<v-col
+													cols="2"
+												>
+													<v-text-field
+														v-model="info.OD_add"
+														label="add"
+														required
+													></v-text-field>
+												</v-col>
+												<!-- 20/-->
+												<v-col
+													cols="2"
+												>
+													<v-text-field
+														v-model="info.OD_20"
+														label="20/"
+														required
+													></v-text-field>
+												</v-col>
+											</v-row>
+
+											<!-- Ojo Izquierdo -->
+											<h3>OI</h3>
+											<v-row>
+												<!-- Esfera -->
+												<v-col
+													cols="2"
+												>
+													<v-text-field
+														v-model="info.OI_esfera"
+														label="Esfera"
+														required
+													></v-text-field>
+												</v-col>
+												<!-- cilindro -->
+												<v-col
+													cols="2"
+												>
+													<v-text-field
+														v-model="info.OI_cilindro"
+														label="Cilindro"
+														required
+													></v-text-field>
+												</v-col>
+												<!-- Eje -->
+												<v-col
+													cols="2"
+												>
+													<v-text-field
+														v-model="info.OI_eje"
+														label="Eje"
+														required
+													></v-text-field>
+												</v-col>
+												<!-- Add -->
+												<v-col
+													cols="2"
+												>
+													<v-text-field
+														v-model="info.OI_add"
+														label="add"
+														required
+													></v-text-field>
+												</v-col>
+												<!-- 20/-->
+												<v-col
+													cols="2"
+												>
+													<v-text-field
+														v-model="info.OI_20"
+														label="20/"
+														required
+													></v-text-field>
+												</v-col>
+											</v-row>
+
+											<!-- Generales Grupo1-->
+											<h3>GENERALES</h3>
+											<v-row>
+												<!-- Estado Motor -->
+												<v-col cols="3">
+													<v-text-field
+														v-model="info.estadoMotor"
+														label="Estado Motor"
+														required/>
+												</v-col>
+												<!-- Segmento Anterior -->
+												<v-col cols="3">
+													<v-text-field
+														v-model="info.segmentoAnterior"
+														label="Segmento Anterior"
+														required/>
+												</v-col>
+												<!-- Fondo de Ojo -->
+												<v-col cols="3">
+													<v-text-field
+														v-model="info.fondoDeOjo"
+														label="Fondo de Ojo"
+														required/>
+												</v-col>
+											</v-row>
+
+											<!-- Generales Grupo2-->
+											<v-row>
+												<!-- Uso de Anteojos -->
+												<v-col cols="3">
+													<v-text-field
+														v-model="info.usoDeAnteojos"
+														label="Uso de Anteojos"
+														required/>
+												</v-col>
+												<!-- Tipo de Lente Sugerido -->
+												<v-col cols="3">
+													<v-text-field
+														v-model="info.tipoDeLenteSugerido"
+														label="Tipo de Lente Sugerido"
+														required/>
+												</v-col>
+												<!-- Distancia Pupilar -->
+												<v-col cols="3">
+													<v-text-field
+														v-model="info.distanciaPupilar"
+														label="Distancia Pupilar"
+														required/>
+												</v-col>
+											</v-row>
+											<!-- Observaciones -->
+											<v-textarea
+													outlined
+													name="input-7-4"
+													label="Observaciones"
+													v-model="info.observaciones"/>
+											<!-- Control -->
+											<v-textarea
+													outlined
+													name="input-7-4"
+													label="Control"
+													v-model="info.control"/>
+										</v-container>
+									</div>
+									<!-- RECETA GOTAS -->
+									<div v-if="typePrescriptrion==='Gotas'">
+										<v-container>
+											<h1>RECETA GOTAS</h1>
+											<!-- Control -->
+											<v-textarea
+													outlined
+													name="input-7-4"
+													label="Diagnostico"
+													v-model="info.diagnosticoGotas"/>
+											<v-textarea
+													outlined
+													name="input-7-4"
+													label="Tratamiento"
+													v-model="info.tratamientoGotas"/>
+											<v-textarea
+													outlined
+													name="input-7-4"
+													label="Medicamentos"
+													v-model="info.medicamentosGotas"/>
+											<v-textarea
+													outlined
+													name="input-7-4"
+													label="Control"
+													v-model="info.controlGotas"/>
+										</v-container>
+									</div>
 								</v-form>
 						</v-card>
 					</v-dialog>
@@ -297,6 +337,7 @@ export default {
 			dialogDelete:false,
 			selectedId:null,
 			valid:true,
+			typePrescriptrion:"Lentes",
 
 			info:{},
 			defaultInfo:{
@@ -322,6 +363,12 @@ export default {
 	
 				observaciones:null,
 				control:null,
+
+				diagnosticoGotas:null,
+				tratamientoGotas:null,
+				medicamentosGotas:null,
+				controlGotas:null,
+				
 			},			
     }
   },
@@ -331,6 +378,7 @@ export default {
 	},
 	methods:{
 		save(){
+			this.cleanInfoBeforeSave()
 			if(!this.selectedId){
 				//crea uno nuevo
 				db.collection("prescriptions").add(
@@ -402,6 +450,13 @@ export default {
 		closeDialog(){
 			this.dialog = false 
 			this.clearInfo()
+		},
+		cleanInfoBeforeSave(){
+			for(let propName in this.info){
+				if(!this.info[propName]){
+					delete this.info[propName]
+				}
+			}
 		},
 		formatedDate(firebaseTimeStamp){
 			const date= new Date(firebaseTimeStamp.seconds*1000)

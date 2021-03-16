@@ -64,14 +64,14 @@
 									<v-container>
 										<v-radio-group
 											class="d-flex flex-row"
-											v-model="typePrescriptrion">
-											<h1>Tipo de Receta</h1>
+											v-model="typePrescription">
+											<h1>TIPO DE RECETA</h1>
 											<v-radio label="Lentes" value="Lentes"/>
 											<v-radio label="Gotas" value="Gotas"/>
 										</v-radio-group>
 									</v-container>
 									<!-- RECETA LENTES -->
-									<div v-if="typePrescriptrion==='Lentes'">
+									<div v-if="typePrescription==='Lentes'">
 										<v-container class="">
 											<h1>RECETA LENTES</h1>
 											<!-- Ojo Derecho -->
@@ -249,7 +249,7 @@
 										</v-container>
 									</div>
 									<!-- RECETA GOTAS -->
-									<div v-if="typePrescriptrion==='Gotas'">
+									<div v-if="typePrescription==='Gotas'">
 										<v-container>
 											<h1>RECETA GOTAS</h1>
 											<!-- Control -->
@@ -318,7 +318,6 @@
 <script>
  import {db} from "../main"
  import firebase from "firebase/app"
-// import moment from 'moment'
 
 export default {
   name: 'recetas',
@@ -329,6 +328,7 @@ export default {
       headers: 
 			[
 				{ text: 'Registro', value: 'register'},
+				{ text: 'Tipo', value: 'typePrescription'},
 				{ text: 'ID', value: 'id'},
 				{ text: 'Opciones', value: 'actions',sortable: false}
       ],
@@ -337,7 +337,7 @@ export default {
 			dialogDelete:false,
 			selectedId:null,
 			valid:true,
-			typePrescriptrion:"Lentes",
+			typePrescription:"Lentes",
 
 			info:{},
 			defaultInfo:{
@@ -384,6 +384,7 @@ export default {
 				db.collection("prescriptions").add(
 					{
 						...this.info,
+						typePrescription:this.typePrescription,
 						uid:this.$store.state.currentUser.uid,
 						register:firebase.firestore.FieldValue.serverTimestamp()
 					})
@@ -396,6 +397,7 @@ export default {
 				//edita
 				db.collection("prescriptions").doc(this.selectedId).update({
 					...this.info,
+					typePrescription:this.typePrescription,
 					uid:this.$store.state.currentUser.uid,
 					register:firebase.firestore.FieldValue.serverTimestamp()
 				})
@@ -413,8 +415,10 @@ export default {
 			.get()
 			.then(data=>{
 				data.forEach(item=>{
+
 					this.recetas.push({
 						id:item.id,
+						typePrescription:item.data().typePrescription,
 						register:this.formatedDate(item.data().register) 
 					})
 				})
@@ -439,6 +443,7 @@ export default {
 			.then(data=>{
 				this.selectedId=item.id
 				this.info={...data.data()}
+				this.typePrescription=data.data().typePrescription
 				this.dialog=true
 			})
 			.catch(e=>console.error(e))

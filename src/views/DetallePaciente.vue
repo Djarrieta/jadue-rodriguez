@@ -1,19 +1,18 @@
 <template>
-    <v-container>
-        
-        <v-row class="fill-height mt-3">
-            <v-col>
-                <h1 class="text-uppercase">Detalle de paciente</h1>
-            </v-col>
-        </v-row>
+	<v-container>
+		<v-row class="fill-height mt-3">
+			<v-col>
+				<h1 class="text-uppercase">Detalle de paciente</h1>
+			</v-col>
+		</v-row>
 
-        <!-- Datos del paciente -->
-        <template>
-            <DatosPaciente :id="idClient"></DatosPaciente>
-        </template>
+		<!-- Datos del paciente -->
+		<template>
+			<DatosPaciente :id="idClient"></DatosPaciente>
+		</template>
 
-        <!-- Botones -->
-        <!-- <template>
+		<!-- Botones -->
+		<!-- <template>
             <v-row
                 align="center"
                 justify="space-around"
@@ -25,48 +24,43 @@
             </v-row>
         </template> -->
 
-        <!-- Historias clínicas -->
-        <template>
-            <HistoriasClinicas class="mt-10" :id="idClient"></HistoriasClinicas>
-        </template>
+		<!-- Historias clínicas -->
+		<template>
+			<HistoriasClinicas class="mt-10" :id="idClient"></HistoriasClinicas>
+		</template>
 
-        <!-- Recetas -->
-        <template>
-            <Recetas class="mt-10" :id="idClient"></Recetas>
-        </template>
+		<!-- Recetas -->
+		<template>
+			<Recetas class="mt-10" :idClient="idClient"></Recetas>
+		</template>
 
-        <!-- Certificados -->
-        <template>
-            <Certificados class="mt-10 mb-10" :id="idClient"></Certificados>
-        </template>
-
-    </v-container>
+		<!-- Certificados -->
+		<template>
+			<Certificados class="mt-10 mb-10" :id="idClient"></Certificados>
+		</template>
+	</v-container>
 </template>
 
 <script>
-    import HistoriasClinicas from "@/components/HistoriasClinicas"
-    import Recetas from "@/components/Recetas"
-    import DatosPaciente from "@/components/DatosPaciente"
-    import Certificados from "@/components/Certificados"
+import HistoriasClinicas from "@/components/HistoriasClinicas";
+import Recetas from "@/components/Recetas";
+import DatosPaciente from "@/components/DatosPaciente";
+import Certificados from "@/components/Certificados";
 
-    export default {
-        name: 'DetallePaciente',
-        components: { HistoriasClinicas, Recetas, DatosPaciente, Certificados },
+export default {
+	name: "DetallePaciente",
+	components: { HistoriasClinicas, Recetas, DatosPaciente, Certificados },
 
-        data: () => ({
-            idClient: '',
-        }),
-        
-        created () {
-            this.idClient = this.$route.params.id;
-        },
+	data: () => ({
+		idClient: "",
+	}),
 
-        computed: {
-            
-        },
+	created() {
+		this.idClient = this.$route.params.id;
+	},
 
-        methods: {
-            
-        }
-    }
+	computed: {},
+
+	methods: {},
+};
 </script>

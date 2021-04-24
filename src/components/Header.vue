@@ -26,11 +26,11 @@
 				<v-list>
 					<v-list-item class="d-flex flex-column">
 						<!-- Perfil -->
-						<v-list-item-title>
+						<!-- <v-list-item-title>
 							<v-btn text>
 								<router-link to="/perfil">Perfil</router-link>
 							</v-btn>
-						</v-list-item-title>
+						</v-list-item-title> -->
 						<!-- Salir -->
 						<v-list-item-title>
 							<v-btn @click="signOut()" text>

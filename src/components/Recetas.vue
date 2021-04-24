@@ -257,6 +257,12 @@
 										<v-textarea
 											outlined
 											name="input-7-4"
+											label="Recomendaciones"
+											v-model="info.recomendacionesGotas"
+										/>
+										<v-textarea
+											outlined
+											name="input-7-4"
 											label="Control"
 											v-model="info.controlGotas"
 										/>
@@ -269,6 +275,10 @@
 			</template>
 
 			<template v-slot:item.actions="{ item }">
+				<v-icon small color="black" class="mr-2" @click="$router.push('/imprimir/' + item.id)">
+					mdi-printer 
+				</v-icon>
+				
 				<v-icon small color="green" class="mr-2" @click="editItem(item)">
 					mdi-pencil
 				</v-icon>
@@ -349,6 +359,7 @@ export default {
 				diagnosticoGotas: null,
 				tratamientoGotas: null,
 				medicamentosGotas: null,
+				recomendacionesGotas: null,
 				controlGotas: null,
 			},
 		};
@@ -455,11 +466,12 @@ export default {
 			const year = date.getFullYear();
 			const month = ("00" + date.getMonth()).slice(-2);
 			const day = ("00" + date.getDate()).slice(-2);
-			const hours = ("00" + date.getHours()).slice(-2);
-			const minutes = ("00" + date.getMinutes()).slice(-2);
-			const seconds = ("00" + date.getSeconds()).slice(-2);
+			// const hours = ("00" + date.getHours()).slice(-2);
+			// const minutes = ("00" + date.getMinutes()).slice(-2);
+			// const seconds = ("00" + date.getSeconds()).slice(-2);
 
-			return `${day} ${month} ${year} ${hours}:${minutes}:${seconds}`;
+			return `${day}-${month}-${year}`;
+			// return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
 		},
 	},
 };

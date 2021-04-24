@@ -26,7 +26,7 @@
           :type="!passRules ? 'text' : 'password'"
           name="input-10-1"
           label="Contraseña"
-          hint="At least 8 characters"
+          hint="Al menos 8 caracteres"
           counter
           @click="showPass = !showPass">
         </v-text-field>
@@ -39,7 +39,7 @@
           :type="!passRules ? 'text' : 'password'"
           name="input-10-1"
           label="Confirmación"
-          hint="At least 8 characters"
+          hint="Al menos 8 caracteres"
           counter>
         </v-text-field>
       </v-card-text>
@@ -77,9 +77,9 @@ import {db} from "@/main.js"
         v => /.+@.+/.test(v) || 'El formato del correo no está bien.',
       ],
       passRules: {
-        required: value => !!value || 'Required.',
-        min: v => v.length >= 8 || 'Min 8 characters',
-        emailMatch: () => (`The email and password you entered don't match`),
+        required: value => !!value || 'Requerido.',
+        min: v => v.length >= 8 || 'Min 8 caracteres',
+        emailMatch: () => (`No coinciden`),
       },
     }),
     methods:{

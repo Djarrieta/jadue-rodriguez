@@ -54,11 +54,19 @@
                         <v-spacer></v-spacer>
                         <v-toolbar-items>
                             <v-btn
+                                v-if="selectedId"
+                                dark
+                                text
+                                @click="$router.push('/imprimir-certificado/' + selectedId)"
+                            >
+                                Imprimir
+                            </v-btn>
+                            <v-btn
                                 dark
                                 text
                                 @click="save"
                             >
-                            {{ formButton }}
+                            {{ formButton }} 
                             </v-btn>
                         </v-toolbar-items>
                         </v-toolbar>
@@ -91,6 +99,10 @@
         </template>
 
         <template v-slot:item.actions="{ item }">
+            <v-icon small color="black" class="mr-2" @click="$router.push('/imprimir-certificado/' + item.id)">
+                mdi-printer 
+            </v-icon>
+
             <v-icon
                 small
                 color="green"
@@ -147,6 +159,7 @@ export default {
             certificates: [],
             loadingClient: true,
             loadingCertificate: true,
+            selectedId: null,
         }
     },
     computed:{
@@ -265,6 +278,7 @@ export default {
                     uid: certificateData.uid,
                     register: moment(register).format('DD-MM-YYYY'),
                 })
+                this.selectedId = doc.id
             })
             this.certificates = certificates
             this.loadingCertificate = false

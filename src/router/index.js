@@ -9,6 +9,7 @@ import Usuarios from "@/views/Usuarios.vue";
 import Pacientes from "@/views/Pacientes.vue";
 import DetallePaciente from "@/views/DetallePaciente.vue";
 import PrintProcedure from "@/views/PrintProcedure.vue";
+import PrintCertificate from "@/views/PrintCertificate.vue";
 
 Vue.use(VueRouter);
 
@@ -50,6 +51,14 @@ const routes = [
 		path: "/imprimir/:idProcedure",
 		name: "PrintProcedure",
 		component: PrintProcedure,
+		meta: {
+			auth: true,
+		},
+	},
+	{
+		path: "/imprimir-certificado/:idCertificate",
+		name: "PrintCertificate",
+		component: PrintCertificate,
 		meta: {
 			auth: true,
 		},

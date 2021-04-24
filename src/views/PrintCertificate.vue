@@ -14,7 +14,7 @@
 					</div>
 				</div>
 				<div class="mainContainer">
-					<!-- <span>ID: {{ idProcedure }}</span> -->
+					<!-- <span>ID: {{ idCertificate }}</span> -->
 					<div class="clientInfo">
 						<div>
 							<label>Nombre: </label>
@@ -40,96 +40,12 @@
 					</div>
 				</div>
 			</div>
-			<!-- prescriptions -->
-			<div v-if="data.typePrescription === 'Lentes'" class="section">
-				<div class="prescriptcion_section-lentes">
-					<span>RP</span>
-					<table>
-						<tr>
-							<th></th>
-							<th>Esfera</th>
-							<th>Cilindro</th>
-							<th>Eje</th>
-							<!-- <th>Add</th>
-							<th>20/</th> -->
-						</tr>
-						<tr>
-							<td>OD</td>
-							<td>{{ data.OD_esfera }}</td>
-							<td>{{ data.OD_cilindro }}</td>
-							<td>{{ data.OD_eje }}</td>
-							<!-- <td>{{ data.OD_add }}</td>
-							<td>{{ data.OD_20 }}</td> -->
-						</tr>
-						<tr>
-							<td>OI</td>
-							<td>{{ data.OI_esfera }}</td>
-							<td>{{ data.OI_cilindro }}</td>
-							<td>{{ data.OI_eje }}</td>
-							<!-- <td>{{ data.OI_add }}</td>
-							<td>{{ data.OI_20 }}</td> -->
-						</tr>
-					</table>
 
-					<div>
-						<div>
-							<label>Estado notor: </label>
-							<span>{{ data.estadoMotor }}</span>
-						</div>
-						<div>
-							<label>Segmento anterior: </label>
-							<span>{{ data.segmentoAnterior }}</span>
-						</div>
-						<div>
-							<label>Fondo de ojo: </label>
-							<span>{{ data.fondoDeOjo }}</span>
-						</div>
-						<div>
-							<label>Uso de anteojos: </label>
-							<span>{{ data.usoDeAnteojos }}</span>
-						</div>
-						<div>
-							<label>Tipo de lente sugerido: </label>
-							<span>{{ data.tipoDeLenteSugerido }}</span>
-						</div>
-						<div>
-							<label>Distancia Pupilar: </label>
-							<span>{{ data.distanciaPupilar }}</span>
-						</div>
-						<div>
-							<label>Observaciones: </label>
-							<span>{{ data.observaciones }}</span>
-						</div>
-						<div>
-							<label>Control: </label>
-							<span>{{ data.control }}</span>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div v-if="data.typePrescription === 'Gotas'" class="section">
+			<div class="section">
 				<div class="prescriptcion_section-gotas">
 					<div class="infoContainer">
-						<p v-if="data.diagnosticoGotas">
-							<label>Diagnóstico: </label>
-							<span>{{ data.diagnosticoGotas }}</span>
-						</p>
-						<p v-if="data.tratamientoGotas">
-							<label>Tratamiento: </label>
-							<span>{{ data.tratamientoGotas }}</span>
-						</p>
-						<p v-if="data.medicamentosGotas">
-							<label>Medicamentos: </label>
-							<span>{{ data.medicamentosGotas }}</span>
-						</p>
-						<p v-if="data.recomendacionesGotas">
-							<label>Recomendaciones: </label>
-							<span>{{ data.recomendacionesGotas }}</span>
-						</p>
-						<p v-if="data.controlGotas">
-							<label>Control: </label>
-							<span>{{ data.controlGotas }}</span>
+						<p v-if="data.certificate">
+							<span>{{ data.certificate }}</span>
 						</p>
 					</div>
 				</div>
@@ -148,19 +64,20 @@ import print from "ink-html";
 export default {
 	data() {
 		return {
-			idProcedure: null,
+			idCertificate: null,
 			data: {},
 		};
 	},
 	created() {
-		this.idProcedure = this.$route.params.idProcedure;
-		db.collection("prescriptions")
-			.doc(this.idProcedure)
+		this.idCertificate = this.$route.params.idCertificate;
+		console.log(this.idCertificate)
+		db.collection("certificates")
+			.doc(this.idCertificate)
 			.get()
 			.then((result) => {
 				this.data = result.data();
 				db.collection("clients")
-					.doc(this.data.idClient)
+					.doc(this.data.uid)
 					.get()
 					.then((clientInfo) => {
 						this.data = { ...this.data, clientInfo: clientInfo.data() };

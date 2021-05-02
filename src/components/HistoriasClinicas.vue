@@ -440,7 +440,7 @@
                                     <v-col cols="2">
                                         <v-text-field
                                             v-model="editedItem.retinoscopiaODAv"
-                                            label="OD AV"
+                                            label="OD AV 20/"
                                         />
                                     </v-col>
                                 </v-row>
@@ -481,7 +481,7 @@
                                     <v-col cols="2">
                                         <v-text-field
                                             v-model="editedItem.retinoscopiaOIAv"
-                                            label="OI AV"
+                                            label="OI AV 20/"
                                         />
                                     </v-col>
                                 </v-row>

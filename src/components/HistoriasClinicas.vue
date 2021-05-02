@@ -251,6 +251,10 @@
                                         />
                                     </v-col>
                                 </v-row>
+
+                                 <v-row>
+                                    <v-subheader><h2 class="">Agudez visual Con Rx</h2></v-subheader>
+                                </v-row>
                                 <!-- 02 -->
                                 <!-- Lejos OD 20/ | Cerca OD 20/ | PH OD 20/ -->
                                 <v-row>

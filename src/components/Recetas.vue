@@ -321,7 +321,7 @@ export default {
 			headers: [
 				{ text: "Registro", value: "register" },
 				{ text: "Tipo", value: "typePrescription" },
-				{ text: "ID", value: "idClient" },
+				// { text: "ID", value: "idClient" },
 				{ text: "Opciones", value: "actions", sortable: false },
 			],
 			recetas: [],

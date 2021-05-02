@@ -327,7 +327,7 @@
                                 </v-row>
 
                                 <v-row>
-                                    <v-subheader><h2 class="">Querimetria</h2></v-subheader>
+                                    <v-subheader><h2 class="">Queratometría</h2></v-subheader>
                                 </v-row>
                                 <!-- Querimetria OD -->
                                 <v-row>
